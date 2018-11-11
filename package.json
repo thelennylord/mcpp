@@ -1,6 +1,6 @@
 {
   "name": "mcpp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Preprocessor for Minecraft function",
   "main": "index.js",
   "scripts": {
@@ -23,5 +23,8 @@
   },
   "dependencies": {
     "mkdirp": "^0.5.1"
+  },
+  "bin": {
+    "mcpp": "index.js"
   }
 }
