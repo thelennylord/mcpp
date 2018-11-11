@@ -29,7 +29,7 @@ if (process.argv[2]) {
 };
 
 // for script use
-exports = (input, output) => {
+module.exports = (input, output) => {
     if (!output) output = ``;
     if (input) require(`./processes/files.js`).init(path.resolve(input));
     else throw new Error(`\nInput path cannot be undefined\n`);
