@@ -1,0 +1,27 @@
+{
+  "name": "mcpp",
+  "version": "0.1.0",
+  "description": "Preprocessor for Minecraft function",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thelennylord/mcpp.git#master"
+  },
+  "keywords": [
+    "mcpp",
+    "minecraft",
+    "functions",
+    "preprocessor"
+  ],
+  "author": "thelennylord",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thelennylord/mcpp/issues"
+  },
+  "dependencies": {
+    "mkdirp": "^0.5.1"
+  }
+}

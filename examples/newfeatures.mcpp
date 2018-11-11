@@ -1,0 +1,19 @@
+@desc Adds some interesting features to the game
+@type normal
+@export single
+
+# Makes the water poisonous!
+if (block ~ ~ ~ water as @a at @s) {
+    effect give @a minecraft:poison 1 1 false
+}
+
+function goldParty() {
+    tellraw @a {"text":"Someone stepped on a gold block!"}
+    kill @a
+}
+
+# Kills everyone if a player is on a gold block
+if (block ~ ~-1 ~ gold_block as @a at @s) {
+    tellraw @s {"text":"You should be more careful..."}
+    goldParty()
+}
