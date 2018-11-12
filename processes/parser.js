@@ -27,19 +27,25 @@ module.exports = (input, out, isPack) => {
         let isNeeded = false;
         let func_dummy = false;
         let hasExportProp = false;
+        let prevCondition;
         let filename = path.basename(input).replace(/\.[^/.]+$/, "");
-        let output = []; 
+        let localInstances = {};
+        let output = [];
         let scanning_func = []; 
         let scanning_if = [];
+        let scanning_else = [];
         let scanning_total = [];
         let parentprop = [];
         let summonASF = []; 
         let commons = [];
         let ifTagsAdd = [];
+        let elseTagsAdd = [];
         let ifStatements = [];
+        let elseStatements = [];
         let functionsExecutor = [];
         let functionsContent = [];
         let ifTagsRemover = [];
+        let elseTagsRemover = [];
 
         let content = data.toString().split(`\n`);
         data.toString().includes(`\r`) ? content = data.toString().split(`\r\n`) : ``;
@@ -106,6 +112,7 @@ module.exports = (input, out, isPack) => {
                     let cmd = statement.substring(1).substring(0, statement.length-2).substring(0, statement.length-4).trim();
                     let dd = combi();
                     scanning_if.push(`execute if ${cmd} run`);
+                    prevCondition = cmd;
                     ifTagsAdd.push(`execute as @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] run ${scanning_if.join(` `)} tag @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] add ${dd}`);
                     parentprop.push(dd);
                     scanning_total.push(`if`);
@@ -126,17 +133,30 @@ module.exports = (input, out, isPack) => {
                     scanning_if.pop();
                     scanning_total.pop();
                     parentprop.pop();
+                    if (line.trim() == `} else {`) {
+                        if (!prevCondition) throw new Error(`Error occurred at line ${lines + 1}`);
+                        let dd = combi();
+                        scanning_else.push(`execute unless ${prevCondition} run`);
+                        elseTagsAdd.push(`execute as @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] run ${scanning_else.join(` `)} tag @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] add ${dd}`);
+                        parentprop.push(dd);
+                        scanning_total.push(`else`);
+                    };
+                } else if (scanning_total[scanning_total.length - 1] == `else`) {
+                    elseTagsRemover.push(`execute as @e[type=armor_stand,name="mcppfunc",limit=1${ifIf()}] run tag @e[type=armor_stand,name="mcppfunc",limit=1${ifIf()}] remove ${parentprop[parentprop.length - 1]}`);
+                    scanning_else.pop();
+                    scanning_total.pop();
+                    parentprop.pop();
                 } else throw new Error(`Error occurred at line ${lines + 1}`);
-            } else if (line.trim().startsWith(`store`)) {
+            } else if (line.trim().startsWith(`local`)) {
                 // TODO
-                let var_name = line.trim().slice(5).split(/ +/g);
-                if (var_name[1] == `=`) {
+                let localName = line.trim().slice(5).split(/ +/g);
+                if (localName[1] == `=`) {
                     // TODO
                 } else {
-                    throw new Error(`Variable not defined properly at line ${lines + 1}`);
+                    throw new Error(`Local not defined properly at line ${lines + 1}`);
                 }
             } else if (line.trim().startsWith(`var`)) {
-                // var is used for storing only int without using execute store
+                // TODO
             } else if (line) {
 
                     if (scanning_total[scanning_total.length-1] == `function`) {
@@ -147,6 +167,10 @@ module.exports = (input, out, isPack) => {
                         if (!scanning_func.length && scanning_if.length) ifStatements.push(`${scanning_if.join(` `)} ${line.trim()}`);
                         else if (scanning_func.length && scanning_if.length) ifStatements.push(`execute as @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()}] run ${scanning_if.join(` `)} ${line.trim()}`);
 
+                    } else if (scanning_total[scanning_total.length-1] == `else`) {
+                        if (!scanning_func.length && scanning_else.length) elseStatements.push(`${scanning_else.join(` `)} ${line.trim()}`);
+                        else if (scanning_func.length && scanning_else.length) elseStatements.push(`execute as @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()}] run ${scanning_else.join(` `)} ${line.trim()}`);
+
                     } else if (!scanning_total.length) commons.push(line);
                     else throw new Error(`Error occurred at line ${lines + 1}`);
             };
@@ -155,7 +179,7 @@ module.exports = (input, out, isPack) => {
         if (!mcfunc_type) throw new Error(`@type missing from ${filename}.mcpp`);
         if (!hasExportProp) throw new Error(`@export missing from ${filename}.mcpp`);
 
-        output = summonASF.concat(commons).concat(ifTagsAdd).concat(ifStatements).concat(functionsExecutor).concat(functionsContent).concat(ifTagsRemover);
+        output = summonASF.concat(commons).concat(ifTagsAdd).concat(elseTagsAdd).concat(ifStatements).concat(elseStatements).concat(functionsExecutor).concat(functionsContent).concat(ifTagsRemover).concat(elseTagsRemover);
 
         if (isPack) require(`./files.js`).final({
             "name": filename,

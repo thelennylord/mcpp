@@ -1,4 +1,6 @@
 # mcpp - Minecraft function preprocessor
+![Downloads](https://img.shields.io/npm/dt/mcpp.svg)
+
 mcpp is a [Minecraft function](https://minecraft.gamepedia.com/Function) preprocessor, which makes working in Minecraft functions more easier.
 
 mcpp is in alpha, so you may experience bugs and glitches. If you encounter them, you can create an issue to report it.
@@ -32,6 +34,8 @@ function goldParty() {
 if (block ~ ~-1 ~ gold_block as @a at @s) {
     tellraw @s {"text":"You should be more careful..."}
     goldParty()
+} else {
+    tellraw @s {"text":"You are not on a gold block!"}
 }
 ```
 The above example adds some features to the game by making water poisonous and by killing everyone if you step on a gold block. It produces a single mcfunction file which shares the same name as that of the mcpp file.

@@ -4,7 +4,7 @@
   "description": "Preprocessor for Minecraft function",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -14,10 +14,11 @@
     "mcpp",
     "minecraft",
     "functions",
-    "preprocessor"
+    "preprocessor",
+    "command blocks"
   ],
   "author": "thelennylord",
-  "license": "MIT",
+  "license": "gpl-3.0",
   "bugs": {
     "url": "https://github.com/thelennylord/mcpp/issues"
   },
@@ -25,6 +26,6 @@
     "mkdirp": "^0.5.1"
   },
   "bin": {
-    "mcpp": "index.js"
+    "mcpp": "processes/bin.js"
   }
 }
