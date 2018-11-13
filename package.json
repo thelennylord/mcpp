@@ -1,10 +1,10 @@
 {
   "name": "mcpp",
-  "version": "0.1.1",
+  "version": "0.1.3",
   "description": "Preprocessor for Minecraft function",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "node ./processes/bin.js i ./examples/newfeatures.mcpp"
   },
   "repository": {
     "type": "git",
@@ -15,6 +15,8 @@
     "minecraft",
     "functions",
     "preprocessor",
+    "compiler",
+    "java edition",
     "command blocks"
   ],
   "author": "thelennylord",

@@ -1,0 +1,21 @@
+@desc Prevent others from jumping
+@type loop
+@export pack
+
+# Here, the type is set loop (the file will loop, that is, it will fire every tick in Minecraft)
+# The export is set to pack (mcpp will create a datapack and include this file in it). 
+# We'll see more about the power of mcpp's datapack creation where multiple files can be included in the same datapack mcpp makes
+
+if (score @s Health matches 0 as @a) {
+    tellraw @s {"text":"You died!"}
+    kill @s
+    scoreboard players set @s Health 100
+}
+
+if (score @s Magic matches 25.. as @a) {
+    tellraw @s {"text":"You have plenty of magic left!"}
+} elseif (score @s Magic matches ..25 as @a) {
+    tellraw @s {"text":"You are running out of magic!"}
+} else {
+    tellraw @s {"text":"You ran out of magic!"}
+}
