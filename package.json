@@ -1,10 +1,10 @@
 {
   "name": "mcpp",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Preprocessor for Minecraft function",
   "main": "index.js",
   "scripts": {
-    "test": "node ./processes/bin.js i ./examples/newfeatures.mcpp"
+    "test": "node ./processes/bin.js i ./examples/exampleone.mcpp"
   },
   "repository": {
     "type": "git",

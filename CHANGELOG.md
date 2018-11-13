@@ -1,5 +1,8 @@
 # Changelog
 
+## v0.1.4
+- Forgot to rechange file names which was breaking Travis CI
+
 ## v0.1.3
 - `elseif` statement has been added
 - Added more content to README
