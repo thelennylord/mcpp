@@ -67,7 +67,19 @@ module.exports = (input, out, isPack) => {
         for (let lines = 0; lines < content.length; lines++) { // for loop is much better and faster than for..in
             let line = content[lines].trim();
             if (line.startsWith(`#`)) continue;
-            else if (line.trim().startsWith(`@`)) {
+            if (line.trim().includes(`$`)) {
+                let localCalls = line.trim().match(/\$\w+/g);
+                if (localCalls.length) {
+                    for (let i = 0; i < localCalls.length; i++) {
+                        let call = localCalls[i];
+                        let name = localCalls[i].substring(1);
+                        if (!localInstances[name]) throw new Error(`Cannot call unexisting variable at line ${lines + 1}`);
+                        line = line.trim().replace(call, localInstances[name]);
+                    };
+                };
+            };
+
+            if (line.trim().startsWith(`@`)) {
                 let property = line.trim().slice(1).split(/ +/g);
                 if (property[0] == `type`) {
                     if (property[1] == `loop`) {
@@ -184,14 +196,14 @@ module.exports = (input, out, isPack) => {
                     parentprop.pop();
                 } else throw new Error(`Error occurred at line ${lines + 1}`);
             } else if (line.trim().startsWith(`local`)) {
-                // TODO
-                let localName = line.trim().slice(5).split(/ +/g);
-                if (localName[1] == `=`) {
-                    // TODO
-                } else {
-                    throw new Error(`Local not defined properly at line ${lines + 1}`);
-                }
-            } else if (line.trim().startsWith(`var`)) {
+                let localName = line.trim().slice(`local`.length).split(/ +/g);
+                if (/\W/.test(localName[1])) throw new Error(`Illegal characters for local at line ${lines + 1}`);
+                if (localName[2] == `=`) {
+                    if (!localName[2]) throw new Error(`Local not defined properly at line ${lines + 1}`);
+                    let localValue = localName.slice(3).join(` `).trim();
+                    localInstances[localName[1]] = localValue;
+                } else throw new Error(`Local not defined properly at line ${lines + 1}`);
+            } else if (line.trim().startsWith(`global`)) {
                 // TODO
             } else if (line) {
 

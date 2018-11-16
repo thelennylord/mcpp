@@ -58,10 +58,12 @@ The above example adds some features to the game by making water poisonous and b
 # The export is set to pack (mcpp will create a datapack and include this file in it). 
 # We'll see more about the power of mcpp's datapack creation where multiple files can be included in the same datapack mcpp makes
 
+local MAX_HEALTH = 100
+
 if (score @s Health matches 0 as @a) {
     tellraw @s {"text":"You died!"}
     kill @s
-    scoreboard players set @s Health 100
+    scoreboard players set @s Health $MAX_HEALTH
 }
 
 if (score @s Magic matches 25.. as @a) {

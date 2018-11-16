@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.5
+- Added local variables in mcpp
+- Updated README to show examples of variables
+
 ## v0.1.4
 - Forgot to rechange file names which was breaking Travis CI
 
