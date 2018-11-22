@@ -128,10 +128,20 @@ module.exports = (input, out, isPack) => {
             }  else if (line.trim().startsWith(`if`)) {
                 let statement = line.slice(`if`.length).trim();
                 if (statement.substring(0, 1) == `(` && statement.substring(statement.length-3) == `) {`) {
-                    let cmd = statement.substring(1).substring(0, statement.length-2).substring(0, statement.length-4).trim();
+                    statement = statement.split(`]`);
+                    let cmd, tempPush, selector;
+                    if (statement.length === 1) {
+                        cmd = statement[0].trim().substring(1).substring(0, statement[0].length-4).trim();
+                        tempPush = `execute if ${cmd} run`;
+                        selector = ``;
+                    } else if (statement.length === 2) {
+                        cmd = statement[1].trim().substring(0, statement[1].length-4).trim();
+                        selector = statement[0].trim().substring(2).trim() + ` `;
+                        tempPush = `execute ${selector}if ${cmd} run`;
+                    } else throw new Error(`Error occurred at line ${lines + 1}`);
                     let dd = combi();
-                    scanning_if.push(`execute if ${cmd} run`);
-                    prevCondition = cmd;
+                    scanning_if.push(tempPush);
+                    prevCondition = [cmd, selector];
                     ifTagsAdd.push(`execute as @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] run ${scanning_if.join(` `)} tag @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] add ${dd}`);
                     parentprop.push(dd);
                     scanning_total.push(`if`);
@@ -158,10 +168,20 @@ module.exports = (input, out, isPack) => {
                         if (!prevCondition) throw new Error(`Error occurred at line ${lines + 1}`);
                         let statement = line.slice(`} elseif`.length).trim();
                         if (statement.substring(0, 1) == `(` && statement.substring(statement.length-3) == `) {`) {
-                            let cmd = statement.substring(1).substring(0, statement.length-2).substring(0, statement.length-4).trim();
+                            let cmd, tempPush, selector;
+                            statement = statement.split(`]`);
+                            if (statement.length === 1) {
+                                cmd = statement[0].trim().substring(1).substring(0, statement[0].length-4).trim();
+                                selector = ``;
+                                tempPush = `execute if ${cmd} run`;
+                            } else if (statement.length === 2) {
+                                cmd = statement[1].trim().substring(0, statement[1].length-4).trim();
+                                selector = statement[0].trim().substring(2).trim() + ` `;
+                                tempPush = `execute ${selector}if ${cmd} run`;
+                            } else throw new Error(`Error occurred at line ${lines + 1}`);
                             let dd = combi();
-                            scanning_elseif.push(`execute unless ${prevCondition} run execute if ${cmd} run`);
-                            prevCondition = cmd;
+                            scanning_elseif.push(`execute ${prevCondition[1]}unless ${prevCondition[0]} run ${tempPush}`);
+                            prevCondition = [cmd, selector];
                             elseIfTagsAdd.push(`execute as @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] run ${scanning_elseif.join(` `)} tag @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] add ${dd}`);
                             parentprop.push(dd);
                             scanning_total.push(`elseif`);
@@ -169,7 +189,7 @@ module.exports = (input, out, isPack) => {
                     } else if (line.trim() == `} else {`) {
                         if (!prevCondition) throw new Error(`Error occurred at line ${lines + 1}`);
                         let dd = combi();
-                        scanning_else.push(`execute unless ${prevCondition} run`);
+                        scanning_else.push(`execute ${prevCondition[1]}unless ${prevCondition[0]} run`);
                         elseTagsAdd.push(`execute as @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] run ${scanning_else.join(` `)} tag @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] add ${dd}`);
                         parentprop.push(dd);
                         scanning_total.push(`else`);
@@ -183,7 +203,7 @@ module.exports = (input, out, isPack) => {
                     if (line.trim() == `} else {`) {
                         if (!prevCondition) throw new Error(`Error occurred at line ${lines + 1}`);
                         let dd = combi();
-                        scanning_else.push(`execute unless ${prevCondition} run`);
+                        scanning_else.push(`execute ${prevCondition[1]}unless ${prevCondition[0]} run`);
                         elseTagsAdd.push(`execute as @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] run ${scanning_else.join(` `)} tag @e[type=armor_stand,name="mcppfunc",limit=1${funFun()}${ifIf()},tag=!${dd}] add ${dd}`);
                         parentprop.push(dd);
                         scanning_total.push(`else`);

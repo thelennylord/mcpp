@@ -29,7 +29,7 @@ mcpp has two types of export settings which can compile your file into a standal
 # Here the export is single, so it will be compiled into a standalone file
 
 # Makes the water poisonous!
-if (block ~ ~ ~ water as @a at @s) {
+if ([as @a at @s] block ~ ~ ~ water) {
     effect give @a minecraft:poison 1 1 false
 }
 
@@ -39,7 +39,7 @@ function goldParty() {
 }
 
 # Kills everyone if a player is on a gold block
-if (block ~ ~-1 ~ gold_block as @a at @s) {
+if ([as @a at @s] block ~ ~-1 ~ gold_block) {
     tellraw @s {"text":"You should be more careful..."}
     goldParty()
 } else {
@@ -60,15 +60,15 @@ The above example adds some features to the game by making water poisonous and b
 
 local MAX_HEALTH = 100
 
-if (score @s Health matches 0 as @a) {
+if ([as @a] score @s Health matches 0) {
     tellraw @s {"text":"You died!"}
     kill @s
     scoreboard players set @s Health $MAX_HEALTH
 }
 
-if (score @s Magic matches 25.. as @a) {
+if ([as @a] score @s Magic matches 25..) {
     tellraw @s {"text":"You have plenty of magic left!"}
-} elseif (score @s Magic matches ..25 as @a) {
+} elseif ([as @a] score @s Magic matches ..25) {
     tellraw @s {"text":"You are running out of magic!"}
 } else {
     tellraw @s {"text":"You ran out of magic!"}

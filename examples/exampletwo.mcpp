@@ -8,15 +8,15 @@
 
 local MAX_HEALTH = 100
 
-if (score @s Health matches 0 as @a) {
+if ([as @a] score @s Health matches 0) {
     tellraw @s {"text":"You died!"}
     kill @s
     scoreboard players set @s Health $MAX_HEALTH
 }
 
-if (score @s Magic matches 25.. as @a) {
+if ([as @a] score @s Magic matches 25..) {
     tellraw @s {"text":"You have plenty of magic left!"}
-} elseif (score @s Magic matches ..25 as @a) {
+} elseif ([as @a] score @s Magic matches ..25) {
     tellraw @s {"text":"You are running out of magic!"}
 } else {
     tellraw @s {"text":"You ran out of magic!"}

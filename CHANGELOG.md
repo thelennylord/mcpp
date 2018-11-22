@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.1.6
+- Added selectors to `if` statements
+- Added example of `mcppdata.json` in examples folder
+- Optimised some part of the code
+
 ## v0.1.5
 - Added local variables in mcpp
 - Updated README to show examples of variables

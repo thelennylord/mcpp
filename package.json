@@ -1,6 +1,6 @@
 {
   "name": "mcpp",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Preprocessor for Minecraft function",
   "main": "index.js",
   "scripts": {

@@ -6,7 +6,7 @@
 # Here the export is single, so it will be compiled into a standalone file
 
 # Makes the water poisonous!
-if (block ~ ~ ~ water as @a at @s) {
+if ([as @a at @s] block ~ ~ ~ water) {
     effect give @a minecraft:poison 1 1 false
 }
 
@@ -16,7 +16,7 @@ function goldParty() {
 }
 
 # Kills everyone if a player is on a gold block
-if (block ~ ~-1 ~ gold_block as @a at @s) {
+if ([as @a at @s] block ~ ~-1 ~ gold_block) {
     tellraw @s {"text":"You should be more careful..."}
     goldParty()
 } else {
