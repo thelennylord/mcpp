@@ -1,6 +1,8 @@
 # mcpp - Minecraft function preprocessor
 [![Build Status](https://travis-ci.com/thelennylord/mcpp.svg?branch=master)](https://travis-ci.com/thelennylord/mcpp)
 
+**mcpp is no longer being maintained**
+
 mcpp is a [Minecraft function](https://minecraft.gamepedia.com/Function) preprocessor, which makes working in Minecraft functions more easier.
 
 mcpp is in alpha, so you may experience bugs and glitches. If you encounter them, you can create an [issue](https://github.com/thelennylord/mcpp/issues) to report it.
